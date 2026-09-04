@@ -1,7 +1,18 @@
 # 一言 · Hitokoto
 
-一个内置于 N.E.K.O 的轻量 Hitokoto 插件。它通过公开 HTTPS API
-`https://v1.hitokoto.cn/` 获取随机一言和每日一句，无需 API Key。
+一个面向 N.E.K.O 的轻量 Hitokoto 插件，作为第三方插件通过
+[N.E.K.O Plugin Market](https://market.project-neko.cn/) 分发。
+它通过公开 HTTPS API `https://v1.hitokoto.cn/` 获取随机一言和每日一句，
+无需 API Key。
+
+## 安装
+
+在 N.E.K.O 的「插件市场」里搜索「一言 · Hitokoto」，点安装即可。
+也可以克隆本仓库后用 Plugin CLI 从源码运行：
+
+```bash
+git clone https://github.com/Alumin-Hydro/n.e.k.o_plugin_hitokoto.git
+```
 
 ## 能力
 
@@ -39,10 +50,34 @@ ID、UUID、类型、长度、缓存命中状态与安全的失败类型。
 时插件会安全降级；进程内仍会避免同一天重复问候。关闭每日缓存后不会读取或写入
 每日一句缓存。
 
-## 本地验证
+## 开发与本地验证
+
+需要本机有 N.E.K.O 源码 checkout 以及 `uv`。在本仓库根目录运行：
 
 ```bash
-uv run python -m pytest plugin/tests/unit/plugins/test_hitokoto.py -x -q
-uv run python -m pytest plugin/tests/integration/test_neko_plugin_cli_repo_plugins.py -x -q
-uv run python -m plugin.neko_plugin_cli check plugin/plugins/hitokoto
+# 运行插件自带的单测（148 个）
+uv run --project /path/to/N.E.K.O pytest tests/ -q
+
+# 运行 N.E.K.O Plugin CLI 的检查（开发模式）
+cd /path/to/N.E.K.O
+uv run neko-plugin check hitokoto --plugins-root /path/to/this/repo/parent
+
+# 构建 .neko-plugin 安装包
+uv run neko-plugin build hitokoto --plugins-root /path/to/this/repo/parent
 ```
+
+## 发布
+
+本仓库已接入官方 `plugin-market-actions-v1` 工作流。每次 push 会触发
+`verify.yml`，调用 `Project-N-E-K-O/N.E.K.O/.github/workflows/plugin-market-verify.yml@main`
+进行标准验证。打 `v*` 标签会触发 `release.yml` 构建 `.neko-plugin` 并通知商城。
+
+推荐使用 N.E.K.O 源码 checkout 里的 CLI 发布：
+
+```bash
+uv run neko-plugin publish hitokoto --plugins-root /path/to/this/repo/parent
+```
+
+## 许可证
+
+MIT
