@@ -8,14 +8,12 @@ import math
 import shutil
 import subprocess
 import threading
-import time
 from pathlib import Path
 from typing import Any
 
 import httpx
-import pytest
-
 import plugin.plugins.hitokoto as hitokoto_module
+import pytest
 from plugin.plugins.hitokoto import (
     API_URL,
     CATEGORIES,

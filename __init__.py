@@ -21,7 +21,6 @@ from typing import Any
 from urllib.parse import quote as url_quote
 
 import httpx
-
 from plugin.sdk.plugin import (
     Err,
     NekoPluginBase,
